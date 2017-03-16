@@ -24,6 +24,11 @@
         MARK文档是一款轻便、简洁的在线协作文档工具，PC端和移动端全覆盖，支持多人同时对文档编辑和评论，让你与他人轻松完成协作撰稿、方案讨论、会议记录和资料共享等工作
       </div>
     </div>
+    <div id="section4" class="section">
+      <div class="dec-con">
+        MARK文档是一款轻便、简洁的在线协作文档工具，PC端和移动端全覆盖，支持多人同时对文档编辑和评论，让你与他人轻松完成协作撰稿、方案讨论、会议记录和资料共享等工作
+      </div>
+    </div>
   </div>
 </template>
 <srcipt>
@@ -79,5 +84,8 @@
   }
   #section3{
     background-image: url("../assets/3.png");
+  }
+  #section4{
+    background-image: url("../assets/4.png");
   }
 </style>
