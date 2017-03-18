@@ -3,7 +3,6 @@
     <router-view></router-view>
   </div>
 </template>
-
 <script>
   export default {
     name: 'app'
@@ -58,6 +57,7 @@
 
   body {
     line-height: 1.6;
+    background-color: #f0f0f0 !important;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -85,6 +85,9 @@
 
   sub, sup {
     vertical-align: baseline;
+  }
+  .icon{
+    font-size: 16px;
   }
 
   #app {

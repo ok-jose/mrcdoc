@@ -2,18 +2,28 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
-// import with ES6
-import VueQuillEditor from 'vue-quill-editor'
+import VueRouter from 'vue-router'
+import routers from './router'
+import Iview from 'iview'
+import 'iview/dist/styles/iview.css'
 // use
-Vue.use(VueQuillEditor)
+Vue.use(VueRouter)
+Vue.use(Iview)
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
+const router = new VueRouter({
+  mode: 'history',
+  base: __dirname,
+  routes: routers
 })
+
+new Vue({
+  router: router,
+  render: h => h(App)
+}).$mount('#app')
+export default {
+  components: {
+    Vue
+  }
+}

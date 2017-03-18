@@ -1,21 +1,20 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import Editor from '@/components/Editor'
 import Guide from '@/components/Guide'
-
-Vue.use(Router)
-
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'guide',
-      component: Guide
-    },
-    {
-      path: '/team',
-      name: 'hello',
-      component: Hello
-    }
-  ]
-})
+import Desktop from '@/components/Desktop'
+export default [
+  {
+    path: '/',
+    name: 'guide',
+    component: Guide
+  },
+  {
+    path: '/editor',
+    name: 'editor',
+    component: Editor
+  },
+  {
+    path: '/desktop',
+    name: 'desktop',
+    component: Desktop
+  }
+]
