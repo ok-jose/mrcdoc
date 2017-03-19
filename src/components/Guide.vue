@@ -81,6 +81,7 @@
 </srcipt>
 <style lang="less" rel="stylesheet/less" type="text/css">
   @yellow: #fee115;
+  @half: 600px;
   html, body, #app, .container, .section {
     width: 100%;
     height: 100%;
@@ -95,6 +96,8 @@
       right: 0;
       width: 100%;
       height: 58px;
+      padding:0 calc(~"50% - @{half}");
+      text-align: left;
       background-color: rgba(0, 0, 0, 0.8);
       z-index: 9;
       .logo {
@@ -169,6 +172,7 @@
   .Newfooter {
     background-color: #2d2d2d;
     overflow: hidden;
+    text-align: left;
     .wp {
       padding: 30px 0;
       overflow: hidden;
