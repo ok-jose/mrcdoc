@@ -45,7 +45,7 @@
       </div>
       <div class="desk-right">
         <p class="right-title">我的桌面</p>
-          <i-table :columns="tableHeader" :data="tableData"></i-table>
+          <Table :columns="tableHeader" :data="tableData"></Table>
       </div>
     </div>
   </div>

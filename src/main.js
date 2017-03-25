@@ -6,9 +6,12 @@ import VueRouter from 'vue-router'
 import routers from './router'
 import Iview from 'iview'
 import 'iview/dist/styles/iview.css'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 // use
 Vue.use(VueRouter)
 Vue.use(Iview)
+Vue.use(VueAxios, axios)
 
 Vue.config.productionTip = false
 

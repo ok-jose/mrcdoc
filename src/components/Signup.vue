@@ -2,17 +2,17 @@
   <div class="sign-box">
     <div class="sign-con" v-show="signWay">
       <p class="con-title"></p>
-      <i-form ref="formValidate" :model="formValidate" :rules="ruleInline">
+      <i-form ref="formValidate" v-model="formValidate">
         <Form-item prop="user">
-          <i-input type="text" :model="formValidate.user" placeholder="邮箱"></i-input>
+          <i-input type="text" v-model="formValidate.user" placeholder="邮箱"></i-input>
         </Form-item>
         <Form-item prop="password">
-          <i-input type="password" :model="formValidate.password" placeholder="密码">
+          <i-input type="password" v-model="formValidate.password" placeholder="密码">
             <span slot="append">忘记密码？</span>
           </i-input>
         </Form-item>
         <Form-item>
-          <i-button type="primary" @click="handleSubmit('formInline')">登录</i-button>
+          <i-button type="primary" @click.native="handleSubmit('formInline')">登录</i-button>
         </Form-item>
         <Form-item>
           <span class="other-way">或</span>
@@ -22,15 +22,15 @@
     </div>
     <div class="sign-con" v-show="!signWay">
       <p class="con-title"></p>
-      <i-form ref="formRegister" :model="formRegister" :rules="ruleRegister">
+      <i-form ref="formRegister" v-model="formRegister" :rules="ruleRegister">
         <Form-item prop="nickname">
-          <i-input type="text" :model="formRegister.nickname" placeholder="昵称"></i-input>
+          <i-input type="text" v-model="formRegister.nickname" placeholder="昵称"></i-input>
         </Form-item>
         <Form-item prop="email">
-          <i-input type="text" :model="formRegister.email" placeholder="注册邮箱"></i-input>
+          <i-input type="text" v-model="formRegister.email" placeholder="注册邮箱"></i-input>
         </Form-item>
         <Form-item prop="password">
-          <i-input type="password" :model="formRegister.password" placeholder="密码"></i-input>
+          <i-input type="password" v-model="formRegister.password" placeholder="密码"></i-input>
         </Form-item>
         <Form-item>
           <i-button type="primary" @click="handleSubmit('formInline')">注册</i-button>
@@ -44,6 +44,7 @@
   </div>
 </template>
 <script>
+  import service from '../services/login'
   export default {
     data () {
       return {
@@ -82,13 +83,17 @@
     },
     methods: {
       handleSubmit (name) {
-        this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.$Message.success('提交成功!')
-          } else {
-            this.$Message.error('表单验证失败!')
-          }
-        })
+        console.log(this.formValidate.user)
+        console.log(this.formValidate.password)
+        service.userLogin(this.formValidate.user, this.formValidate.password)
+//        service.getFiles()
+//        this.$refs[name].validate((valid) => {
+//          if (valid) {
+//            this.$Message.success('提交成功!')
+//          } else {
+//            this.$Message.error('表单验证失败!')
+//          }
+//        })
       },
       changeSign () {
         this.signWay = !this.signWay
