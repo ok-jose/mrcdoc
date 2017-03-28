@@ -118,7 +118,7 @@
   }
 </script>
 
-<style lang="less" rel="stylesheet/less" type="text/css">
+<style lang="less" rel="stylesheet/less" type="text/less">
   .editor-box {
     background-color: #f0f0f0;
   }
