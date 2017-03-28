@@ -139,34 +139,41 @@
     height: 50px;
     line-height: 50px;
     font-size: 14px;
-    .header-left {
-      text-align: left;
-      padding-left: 20px;
-      .history-back {
-        color: #7b7b7b;
-      }
-      .cur-file {
-        margin: 0 20px;
-      }
-      .mark-star {
-        vertical-align: middle;
-        color: #7b7b7b;
-        font-size: 20px;
-      }
-      .update-time {
-        margin: 0 20px;
-      }
-    }
-    .header-right{
-      position: absolute;
-      height: 100%;
-      top: 0;
-      right: 18px;
-      .ivu-menu-horizontal{
-        height: 50px;
-        line-height: 50px;
-      }
-    }
+  .header-left {
+    text-align: left;
+    padding-left: 20px;
+
+  .history-back {
+    color: #7b7b7b;
+  }
+
+  .cur-file {
+    margin: 0 20px;
+  }
+
+  .mark-star {
+    vertical-align: middle;
+    color: #7b7b7b;
+    font-size: 20px;
+  }
+
+  .update-time {
+    margin: 0 20px;
+  }
+
+  }
+  .header-right {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 18px;
+
+  .ivu-menu-horizontal {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  }
   }
 
   .qi-con {
