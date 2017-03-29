@@ -9,7 +9,7 @@
   }
 </script>
 
-<style lang="less" rel="stylesheet/less" type="text/css">
+<style lang="less" rel="stylesheet/less" type="text/less">
   html, body, h1, h2, h3, h4, h5, h6, hr, p, iframe, dl, dt, dd, ul, ol, li, pre, form, button, input, textarea, th, td, fieldset {
     margin: 0;
     padding: 0;

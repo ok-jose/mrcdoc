@@ -2,44 +2,44 @@
   <div class="sign-box">
     <div class="sign-con" v-show="signWay">
       <p class="con-title"></p>
-      <i-form ref="formValidate" v-model="formValidate">
+      <Form ref="formValidate" v-model="formValidate">
         <Form-item prop="user">
-          <i-input type="text" v-model="formValidate.user" placeholder="邮箱"></i-input>
+          <Input type="text" v-model="formValidate.user" placeholder="邮箱"></Input>
         </Form-item>
         <Form-item prop="password">
-          <i-input type="password" v-model="formValidate.password" placeholder="密码">
+          <Input type="password" v-model="formValidate.password" placeholder="密码">
             <span slot="append">忘记密码？</span>
-          </i-input>
+          </Input>
         </Form-item>
         <Form-item>
-          <i-button type="primary" @click.native="handleSubmit('formInline')">登录</i-button>
+          <Button type="primary" @click.native="handleSubmit('formInline')">登录</Button>
         </Form-item>
         <Form-item>
           <span class="other-way">或</span>
           <a href="javascript:;" class="other-btn"  @click="changeSign">注册</a>
         </Form-item>
-      </i-form>
+      </Form>
     </div>
     <div class="sign-con" v-show="!signWay">
       <p class="con-title"></p>
-      <i-form ref="formRegister" v-model="formRegister" :rules="ruleRegister">
+      <Form ref="formRegister" v-model="formRegister" :rules="ruleRegister">
         <Form-item prop="nickname">
-          <i-input type="text" v-model="formRegister.nickname" placeholder="昵称"></i-input>
+          <Input type="text" v-model="formRegister.nickname" placeholder="昵称"></Input>
         </Form-item>
         <Form-item prop="email">
-          <i-input type="text" v-model="formRegister.email" placeholder="注册邮箱"></i-input>
+          <Input type="text" v-model="formRegister.email" placeholder="注册邮箱"></Input>
         </Form-item>
         <Form-item prop="password">
-          <i-input type="password" v-model="formRegister.password" placeholder="密码"></i-input>
+          <Input type="password" v-model="formRegister.password" placeholder="密码"></Input>
         </Form-item>
         <Form-item>
-          <i-button type="primary" @click="handleSubmit('formInline')">注册</i-button>
+          <Button type="primary" @click="handleSubmit('formInline')">注册</Button>
         </Form-item>
         <Form-item>
           <span class="other-way">或</span>
           <a href="javascript:;" class="other-btn" @click="changeSign">登录</a>
         </Form-item>
-      </i-form>
+      </Form>
     </div>
   </div>
 </template>
@@ -50,8 +50,8 @@
       return {
         signWay: true,
         formValidate: {
-          user: '',
-          password: ''
+          user: 'admin',
+          password: 'admin'
         },
         ruleInline: {
           user: [
@@ -83,17 +83,11 @@
     },
     methods: {
       handleSubmit (name) {
-        console.log(this.formValidate.user)
-        console.log(this.formValidate.password)
-        service.userLogin(this.formValidate.user, this.formValidate.password)
-//        service.getFiles()
-//        this.$refs[name].validate((valid) => {
-//          if (valid) {
-//            this.$Message.success('提交成功!')
-//          } else {
-//            this.$Message.error('表单验证失败!')
-//          }
-//        })
+        service.userLogin(this.formValidate.user, this.formValidate.password).then((data) => {
+          if (data.status_code === 200) {
+            this.$router.push({path: 'desktop'})
+          }
+        })
       },
       changeSign () {
         this.signWay = !this.signWay
@@ -101,7 +95,7 @@
     }
   }
 </script>
-<style lang="less" rel="stylesheet/less" type="text/css">
+<style lang="less" rel="stylesheet/less" type="text/less">
   input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 100px #ebebeb inset;
   }

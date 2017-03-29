@@ -79,7 +79,7 @@
 <srcipt>
 
 </srcipt>
-<style lang="less" rel="stylesheet/less" type="text/css">
+<style lang="less" rel="stylesheet/less" type="text/less">
   @yellow: #fee115;
   @half: 600px;
   html, body, #app, .container, .section {

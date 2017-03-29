@@ -1,24 +1,24 @@
 /**
  * Created by lg282 on 2017/3/21.
  */
-import Vue from 'vue'
+import axios from 'axios'
 import config from './request'
 
 export default {
   userLogin (username, password) {
-    Vue.axios.post(config.baseUrl + 'login', {
+    return axios.post(config.baseUrl + 'login', {
       username: username,
       password: password
     })
       .then(function (response) {
-        console.log(response.data)
+        return response.data
       })
       .catch(function (error) {
         console.log(error)
       })
   },
   getFiles () {
-    Vue.axios.get(config.baseUrl + 'desk').then((response) => {
+    axios.get(config.baseUrl + 'desk').then((response) => {
       console.log(response)
     })
   }

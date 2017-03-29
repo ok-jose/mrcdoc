@@ -109,7 +109,7 @@
     }
   }
 </script>
-<style lang="less" rel="stylesheet/less" type="text/css">
+<style lang="less" rel="stylesheet/less" type="text/less">
   .desktop {
     .header-con {
       width: 1200px;
