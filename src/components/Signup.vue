@@ -85,6 +85,8 @@
       handleSubmit (name) {
         service.userLogin(this.formValidate.user, this.formValidate.password).then((data) => {
           if (data.status_code === 200) {
+            // eslint-disable-next-line
+            Cookies.set('token',data.data.token);
             this.$router.push({path: 'desktop'})
           }
         })

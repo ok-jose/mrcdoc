@@ -16,10 +16,5 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
-  },
-  getFiles () {
-    axios.get(config.baseUrl + 'desk').then((response) => {
-      console.log(response)
-    })
   }
 }

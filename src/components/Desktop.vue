@@ -51,6 +51,7 @@
   </div>
 </template>
 <script>
+  import service from '../services/desktop'
   export default{
     data () {
       return {
@@ -106,6 +107,9 @@
           }
         ]
       }
+    },
+    created () {
+      service.getFiles()
     }
   }
 </script>
