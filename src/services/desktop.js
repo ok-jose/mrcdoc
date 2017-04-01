@@ -9,7 +9,7 @@ axios.defaults.headers.common['token'] = TOKEN
 export default {
   getFiles () {
     return axios.get(config.baseUrl + 'desk').then((response) => {
-      console.log(response)
+      return response.data
     })
   }
 }

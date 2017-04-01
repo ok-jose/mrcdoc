@@ -3,6 +3,7 @@
     <div class="nav-bar">
       <a href="/" class="logo"></a>
       <ul class="func-list">
+        <li><a href="/signup">登录</a></li>
         <li><a href="">功能</a></li>
         <li><a href="">解决方案</a></li>
         <li><a href="">更多</a></li>

@@ -60,9 +60,9 @@
             title: '文件名',
             key: 'filename',
             render (row) {
-              return `<svg class="icon icon-font" aria-hidden="true">
+              return `<a href="/editor/` + row.file_id + `"><svg class="icon icon-font" aria-hidden="true">
               <use xlink:href="#icon-wenjianjia"></use>
-            </svg>` + row.filename
+            </svg>` + row.filename + `</a>`
             }
           },
           {
@@ -109,7 +109,12 @@
       }
     },
     created () {
-      service.getFiles()
+      service.getFiles().then((data) => {
+        if (data.status_code === 200) {
+          this.tableData = data.data.files
+          console.log(this.tableData)
+        }
+      })
     }
   }
 </script>

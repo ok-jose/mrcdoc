@@ -14,7 +14,7 @@ export default [
     component: Guide
   },
   {
-    path: '/editor',
+    path: '/editor/:file_id',
     name: 'editor',
     component: Editor
   },
