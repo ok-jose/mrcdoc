@@ -16,7 +16,13 @@ const router = new VueRouter({
   base: __dirname,
   routes: routers
 })
-
+router.beforeEach((to, from, next) => {
+  Iview.LoadingBar.start()
+  next()
+})
+router.afterEach((to, from, next) => {
+  Iview.LoadingBar.finish()
+})
 new Vue({
   router: router,
   render: h => h(App)

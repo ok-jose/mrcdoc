@@ -1,7 +1,10 @@
-import Editor from '@/components/Editor'
-import Guide from '@/components/Guide'
-import Signup from '@/components/Signup'
-import Desktop from '@/components/Desktop'
+import Editor from '@/views/Editor'
+import Guide from '@/views/Guide'
+import Signup from '@/views/Signup'
+import Desktop from '@/views/Desktop'
+import Recent from '@/views/Recent'
+import Star from '@/views/Star'
+import Recycle from '@/views/Recycle'
 export default [
   {
     path: '/signup',
@@ -22,5 +25,20 @@ export default [
     path: '/desktop',
     name: 'desktop',
     component: Desktop
+  },
+  {
+    path: '/recent',
+    name: 'recent',
+    component: Recent
+  },
+  {
+    path: '/star',
+    name: 'star',
+    component: Star
+  },
+  {
+    path: 'recycle',
+    name: 'recycle',
+    component: Recycle
   }
 ]
