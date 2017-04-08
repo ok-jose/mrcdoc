@@ -11,5 +11,10 @@ export default {
     return axios.get(config.baseUrl + 'desk').then((response) => {
       return response.data
     })
+  },
+  createFile (filenname, type) {
+    return axios.post(config.baseUrl + 'files', {filename: filenname, type: type}).then((response) => {
+      return response.data
+    })
   }
 }

@@ -103,14 +103,19 @@
         service.getFiles().then((data) => {
           if (data.status_code === 200) {
             this.tableData = data.data.files
-            console.log(this.tableData)
           }
+        })
+      },
+      createFile () {
+        service.createFile('jose的文件夹', '0').then((data) => {
+          console.log(data)
         })
       },
       hoverShow () {
         return 'hover-show'
       }
-    }
+    },
+    computed: {}
   }
 </script>
 <style lang="less" rel="stylesheet/less" type="text/less">

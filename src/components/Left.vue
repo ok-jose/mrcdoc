@@ -4,18 +4,18 @@
       <Button type="primary" class="new-btn">新建</Button>
       <div class="api" slot="content">
         <ul class="create-list">
-          <li @click="start"><Icon class="create-type" type="ios-paper-outline" size="16"></Icon>文档</li>
-          <li @click="newFolder = true"><Icon class="create-type" type="ios-folder" size="16"></Icon>文件夹</li>
+          <li @click="start(0)"><Icon class="create-type" type="ios-paper-outline" size="16"></Icon>文档</li>
+          <li @click="start(1)"><Icon class="create-type" type="ios-folder" size="16"></Icon>文件夹</li>
           <Modal
-            title="新建文件夹"
+            title="新建文件"
             v-model="newFolder"
             class-name="vertical-center-modal"
             ok-text="新建"
             @on-ok="ok"
             @on-cancel="cancel">
-            <Input v-model="folderName" placeholder="请输入文件夹名称" style="width: 300px"></Input>
+            <Input v-model="folderName" placeholder="请输入文件或文件夹名称" style="width: 300px"></Input>
           </Modal>
-          <li><Icon class="create-type" type="social-markdown" size="16"></Icon>MarkDown</li>
+          <li @click="start(2)"><Icon class="create-type" type="social-markdown" size="16"></Icon>MarkDown</li>
         </ul>
       </div>
     </Poptip>
@@ -57,22 +57,43 @@
 </template>
 
 <script>
+  import service from '../services/desktop'
   export default{
     data () {
       return {
         newFolder: false,
-        folderName: ''
+        folderName: '',
+        newFileType: '0'
       }
     },
     created () {
 
     },
     methods: {
-      start () {
-        console.log('新建')
+      start (type) {
+        switch (type) {
+          case 0:
+            this.newFolder = true
+            this.newFileType = '1'
+            break
+          case 1:
+            this.newFolder = true
+            this.newFileType = '0'
+            break
+          case 2:
+            console.log('new markdown')
+            break
+          default:
+            console.log('defaule')
+            break
+        }
       },
       ok () {
-        console.log('ok')
+        service.createFile(this.folderName, this.newFileType).then((data) => {
+          if (data.status_code === 200) {
+            service.getFiles()
+          }
+        })
       },
       cancel () {
         console.log('cancel')
