@@ -91,7 +91,7 @@
       ok () {
         service.createFile(this.folderName, this.newFileType).then((data) => {
           if (data.status_code === 200) {
-            service.getFiles()
+            this.$emit('uploadFiles')
           }
         })
       },

@@ -16,5 +16,10 @@ export default {
     return axios.post(config.baseUrl + 'files', {filename: filenname, type: type}).then((response) => {
       return response.data
     })
+  },
+  delFiles (fileId) {
+    return axios.delete(config.baseUrl + 'files?file_ids=' + fileId).then((response) => {
+      return response.data
+    })
   }
 }

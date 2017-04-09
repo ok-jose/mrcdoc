@@ -2,12 +2,35 @@
   <div class="desktop">
     <header-component></header-component>
     <div class="desk-content">
-      <left-component></left-component>
+      <left-component @uploadFiles="getFileList"></left-component>
       <div class="desk-right">
         <p class="right-title">我的桌面</p>
         <Table :row-class-name="hoverShow" :columns="tableHeader" :data="tableData"></Table>
       </div>
     </div>
+    <Modal v-model="modalData.delModal" width="360">
+      <p slot="header" style="color:#f60;text-align:center">
+        <Icon type="information-circled"></Icon>
+        <span>删除确认</span>
+      </p>
+      <div style="text-align:center">
+        <p>此任务删除后，可以在回收站中找回。</p>
+        <p>是否继续删除？</p>
+      </div>
+      <div slot="footer">
+        <Button type="error" size="large" @click="delItem">删除</Button>
+      </div>
+    </Modal>
+    <Modal
+      v-model="modalData.moveModal"
+      title="移动文件">
+      <ul>
+        <li v-for="folder in tableData">
+          <Icon class="create-type" type="ios-folder" size="16"></Icon>
+          {{folder | getFolders(folder)}}
+        </li>
+      </ul>
+    </Modal>
   </div>
 </template>
 <script>
@@ -21,10 +44,38 @@
     },
     data () {
       return {
+        modalData: {
+          delModal: false,
+          moveModal: false
+        },
+        operationId: '',
         tableHeader: [
+          {
+            type: 'selection',
+            width: 60,
+            align: 'center'
+          },
           {
             title: '文件名',
             key: 'filename',
+            filters: [
+              {
+                label: '只看文件',
+                value: 1
+              },
+              {
+                label: '只看文件夹',
+                value: 0
+              }
+            ],
+            filterMultiple: false,
+            filterMethod (value, row) {
+              if (value === 1) {
+                return row.type === 1
+              } else if (value === 0) {
+                return row.type === 0
+              }
+            },
             render (row) {
               var iconTxt = 'ios-paper-outline'
               if (row.type === 1) {
@@ -55,10 +106,10 @@
                         <div class="api" slot="content">
                         <input type="text" value="` + row.filename + `">
                           <ul class="setting-list">
-                            <li><Icon type="bookmark" size="16"></Icon>标星</li>
-                            <li><Icon type="ios-color-filter-outline" size="16"></Icon>协作</li>
-                            <li><Icon type="android-arrow-forward" size="16"></Icon>移动</li>
-                            <li><Icon type="ios-trash-outline" size="16"></Icon>删除</li>
+                            <li @click="operation('${row.fie_id}', 1)"><Icon type="bookmark" size="16"></Icon>标星</li>
+                            <li @click="operation('${row.file_id}', 2)"><Icon type="android-arrow-forward" size="16"></Icon>移动</li>
+                            <li @click="operation('${row.file_id}', 3)"><Icon type="ios-color-filter-outline" size="16"></Icon>协作</li>
+                            <li @click="operation('${row.file_id}', 4)"><Icon type="ios-trash-outline" size="16"></Icon>删除</li>
                           </ul>
                         </div>
                       </Poptip>
@@ -66,33 +117,7 @@
             }
           }
         ],
-        tableData: [
-          {
-            'filename': '测试文档',
-            'creator_name': 'JoseLee',
-            'update_time': '2017-04-03'
-          },
-          {
-            'filename': '译库4.0buglist',
-            'creator_name': '千秋雪',
-            'update_time': '2017-04-01'
-          },
-          {
-            'filename': '译库4.0buglist',
-            'creator_name': '千秋雪',
-            'update_time': '2017-04-05'
-          },
-          {
-            'filename': '译库4.0buglist',
-            'creator_name': '千秋雪',
-            'update_time': '2017-04-03'
-          },
-          {
-            'filename': '译库4.0buglist',
-            'creator_name': '千秋雪',
-            'update_time': '2017-04-03'
-          }
-        ]
+        tableData: []
       }
     },
     created () {
@@ -111,11 +136,40 @@
           console.log(data)
         })
       },
+      operation (fileId, type) {
+        if (type === 1) {
+          console.log('收藏')
+        } else if (type === 2) {
+          console.log('移动')
+          this.modalData.moveModal = true
+        } else if (type === 3) {
+          console.log('协作')
+        } else if (type === 4) {
+          console.log('删除')
+          this.modalData.delModal = true
+          this.operationID = fileId
+        }
+      },
+      delItem () {
+        service.delFiles(this.operationID).then((data) => {
+          if (data.status_code === 200) {
+            this.modalData.delModal = false
+            this.getFileList()
+          }
+        })
+      },
       hoverShow () {
         return 'hover-show'
       }
     },
-    computed: {}
+    computed: {},
+    filters: {
+      getFolders (item) {
+        if (item.type < 1) {
+          return item.filename
+        }
+      }
+    }
   }
 </script>
 <style lang="less" rel="stylesheet/less" type="text/less">
@@ -173,6 +227,9 @@
             }
           }
         }
+      }
+      .ivu-icon{
+        width: 30px;
       }
     }
     .nodis {
