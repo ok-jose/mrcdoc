@@ -1,7 +1,7 @@
 <template>
   <div class="nav-header">
     <div class="header-con">
-      <a href="/" class="logo-bg"></a>
+      <a href="/desktop" class="logo-bg"></a>
       <div class="avatar-con">
         <Icon class="notice-bell" type="ios-bell-outline" size="20"></Icon>
         <Poptip placement="bottom-end" width="350">

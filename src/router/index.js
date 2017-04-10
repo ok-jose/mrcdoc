@@ -5,6 +5,8 @@ import Desktop from '@/views/Desktop'
 import Recent from '@/views/Recent'
 import Star from '@/views/Star'
 import Recycle from '@/views/Recycle'
+import Account from '@/views/Account'
+import Solution from '@/views/Solution'
 export default [
   {
     path: '/signup',
@@ -40,5 +42,15 @@ export default [
     path: '/recycle',
     name: 'recycle',
     component: Recycle
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: Account
+  },
+  {
+    path: '/solution',
+    name: 'solution',
+    component: Solution
   }
 ]

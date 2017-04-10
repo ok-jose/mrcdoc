@@ -1,15 +1,6 @@
 <template>
   <div class="container">
-    <div class="nav-bar">
-      <a href="/" class="logo"></a>
-      <ul class="func-list">
-        <li><a href="/signup">登录</a></li>
-        <li><a href="">功能</a></li>
-        <li><a href="">解决方案</a></li>
-        <li><a href="">更多</a></li>
-        <li><a href="">关于我们</a></li>
-      </ul>
-    </div>
+    <navbar-component></navbar-component>
     <div id="section1" class="section">
       <div class="img-con">
         <img src="../assets/page1.png" alt="">
@@ -77,9 +68,29 @@
     </div>
   </div>
 </template>
-<srcipt>
-
-</srcipt>
+<script>
+  import navbarComponent from '../components/Navbar.vue'
+  import service from '../services/login'
+  export default {
+    components: {
+      navbarComponent
+    },
+    data () {
+      return {
+        token: ''
+      }
+    },
+    created () {
+//      this.getToken()
+    },
+    methods: {
+      getToken () {
+        this.token = service.guide()
+        console.log(this.token)
+      }
+    }
+  }
+</script>
 <style lang="less" rel="stylesheet/less" type="text/less">
   @yellow: #fee115;
   @half: 600px;
@@ -90,37 +101,6 @@
 
   .container {
     min-width: 980px;
-    .nav-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 58px;
-      padding:0 calc(~"50% - @{half}");
-      text-align: left;
-      background-color: rgba(0, 0, 0, 0.8);
-      z-index: 9;
-      .logo {
-        display: inline-block;
-        width: 200px;
-        height: 58px;
-        background: url("../assets/logo1.png") no-repeat 0 center;
-        background-size: cover;
-      }
-      .func-list {
-        float: right;
-        margin-right: 50px;
-        & > li {
-          float: left;
-          padding: 20px;
-          color: #ffffff;
-          a {
-            color: inherit;
-          }
-        }
-      }
-    }
     .section {
       min-height: 650px;
       background: repeat-x center center fixed;

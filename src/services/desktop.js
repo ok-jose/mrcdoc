@@ -26,5 +26,10 @@ export default {
     return axios.post(config.baseUrl + 'stars', {file_id: fileId, type: type}).then((response) => {
       return response.data
     })
+  },
+  getStarFiles () {
+    return axios.get(config.baseUrl + 'stars').then((response) => {
+      return response.data
+    })
   }
 }

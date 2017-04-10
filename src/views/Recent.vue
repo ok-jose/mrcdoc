@@ -46,7 +46,6 @@
     },
     created () {
       this.getReLists()
-//      console.log(this.recentList)
     },
     methods: {
       getReLists () {

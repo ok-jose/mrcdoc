@@ -34,11 +34,13 @@
   </div>
 </template>
 <script>
+  import navbarComponent from '../components/Navbar.vue'
   import leftComponent from '../components/Left.vue'
   import headerComponent from '../components/Header.vue'
   import service from '../services/desktop'
   export default{
     components: {
+      navbarComponent,
       leftComponent,
       headerComponent
     },
@@ -62,9 +64,9 @@
             align: 'center',
             render (row) {
               if (row.is_star === 1) {
-                return `<Icon type="bookmark" color="#6ea3e6"></Icon>`
+                return `<span @click="operation('${row.file_id}', ${row.is_star})"><Icon type="android-bookmark" color="#6ea3e6"></Icon></span>`
               } else {
-                return `<Icon type="bookmark"></Icon>`
+                return `<span @click="operation('${row.file_id}', ${row.is_star})"><Icon type="android-bookmark" color="#a5a5a5"></Icon></span>`
               }
             }
           },
@@ -171,7 +173,9 @@
       },
       starOrNo (type) {
         service.withOrWithout(this.operationID, type).then((data) => {
-          console.log(data)
+          if (data.status_code === 200) {
+            this.getFileList()
+          }
         })
       },
       delItem () {
