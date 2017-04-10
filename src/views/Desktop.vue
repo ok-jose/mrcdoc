@@ -50,10 +50,23 @@
         },
         operationId: '',
         tableHeader: [
+//          {
+//            type: 'selection',
+//            width: 60,
+//            align: 'center'
+//          },
           {
-            type: 'selection',
+            title: '收藏',
+            key: 'is_star',
             width: 60,
-            align: 'center'
+            align: 'center',
+            render (row) {
+              if (row.is_star === 1) {
+                return `<Icon type="bookmark" color="#6ea3e6"></Icon>`
+              } else {
+                return `<Icon type="bookmark"></Icon>`
+              }
+            }
           },
           {
             title: '文件名',
@@ -106,7 +119,8 @@
                         <div class="api" slot="content">
                         <input type="text" value="` + row.filename + `">
                           <ul class="setting-list">
-                            <li @click="operation('${row.fie_id}', 1)"><Icon type="bookmark" size="16"></Icon>标星</li>
+                            <li @click="operation('${row.file_id}', ${row.is_star})"><Icon type="bookmark" size="16"></Icon><span v-if="${row.is_star === 0}">收藏</span><span v-else>取消收藏</span>
+                            </li>
                             <li @click="operation('${row.file_id}', 2)"><Icon type="android-arrow-forward" size="16"></Icon>移动</li>
                             <li @click="operation('${row.file_id}', 3)"><Icon type="ios-color-filter-outline" size="16"></Icon>协作</li>
                             <li @click="operation('${row.file_id}', 4)"><Icon type="ios-trash-outline" size="16"></Icon>删除</li>
@@ -137,8 +151,13 @@
         })
       },
       operation (fileId, type) {
-        if (type === 1) {
+        this.operationID = fileId
+        if (type === 0) {
           console.log('收藏')
+          this.starOrNo(1)
+        } else if (type === 1) {
+          console.log('收藏')
+          this.starOrNo(0)
         } else if (type === 2) {
           console.log('移动')
           this.modalData.moveModal = true
@@ -147,8 +166,13 @@
         } else if (type === 4) {
           console.log('删除')
           this.modalData.delModal = true
-          this.operationID = fileId
+//          this.operationID = fileId
         }
+      },
+      starOrNo (type) {
+        service.withOrWithout(this.operationID, type).then((data) => {
+          console.log(data)
+        })
       },
       delItem () {
         service.delFiles(this.operationID).then((data) => {

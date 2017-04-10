@@ -21,5 +21,10 @@ export default {
     return axios.delete(config.baseUrl + 'files?file_ids=' + fileId).then((response) => {
       return response.data
     })
+  },
+  withOrWithout (fileId, type) {
+    return axios.post(config.baseUrl + 'stars', {file_id: fileId, type: type}).then((response) => {
+      return response.data
+    })
   }
 }

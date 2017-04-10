@@ -37,7 +37,7 @@ export default [
     component: Star
   },
   {
-    path: 'recycle',
+    path: '/recycle',
     name: 'recycle',
     component: Recycle
   }

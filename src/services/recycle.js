@@ -6,7 +6,7 @@ import config from './request'
 
 export default {
   getRecycleFile () {
-    return axios.get(config.baseUrl + '/recycle').then((response) => {
+    return axios.get(config.baseUrl + 'recycle').then((response) => {
       return response.data
     })
   }

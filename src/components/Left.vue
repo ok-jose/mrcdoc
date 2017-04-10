@@ -4,8 +4,14 @@
       <Button type="primary" class="new-btn">新建</Button>
       <div class="api" slot="content">
         <ul class="create-list">
-          <li @click="start(0)"><Icon class="create-type" type="ios-paper-outline" size="16"></Icon>文档</li>
-          <li @click="start(1)"><Icon class="create-type" type="ios-folder" size="16"></Icon>文件夹</li>
+          <li @click="start(0)">
+            <Icon class="create-type" type="ios-paper-outline" size="16"></Icon>
+            文档
+          </li>
+          <li @click="start(1)">
+            <Icon class="create-type" type="ios-folder" size="16"></Icon>
+            文件夹
+          </li>
           <Modal
             title="新建文件"
             v-model="newFolder"
@@ -15,13 +21,16 @@
             @on-cancel="cancel">
             <Input v-model="folderName" placeholder="请输入文件或文件夹名称" style="width: 300px"></Input>
           </Modal>
-          <li @click="start(2)"><Icon class="create-type" type="social-markdown" size="16"></Icon>MarkDown</li>
+          <li @click="start(2)">
+            <Icon class="create-type" type="social-markdown" size="16"></Icon>
+            MarkDown
+          </li>
         </ul>
       </div>
     </Poptip>
     <ul class="file-tree">
       <li class="tree-sub">
-        <a href="/desktop" class="file-icon">
+        <a href="/desktop" class="file-icon" :class="$route.name === 'desktop' ? 'route-active' : ''">
           <svg class="icon icon-font" aria-hidden="true">
             <use xlink:href="#icon-zhuomian"></use>
           </svg>
@@ -29,7 +38,7 @@
         </a>
       </li>
       <li class="tree-sub">
-        <a href="/recent" class="file-icon">
+        <a href="/recent" class="file-icon" :class="$route.name === 'recent' ? 'route-active' : ''">
           <svg class="icon icon-font" aria-hidden="true">
             <use xlink:href="#icon-iconfontshijian"></use>
           </svg>
@@ -37,7 +46,7 @@
         </a>
       </li>
       <li class="tree-sub">
-        <a href="/star" class="file-icon">
+        <a href="/star" class="file-icon" :class="$route.name === 'star' ? 'route-active' : ''">
           <svg class="icon icon-font" aria-hidden="true">
             <use xlink:href="#icon-shuqian1"></use>
           </svg>
@@ -45,7 +54,7 @@
         </a>
       </li>
       <li class="tree-sub">
-        <a href="/recycle" class="file-icon">
+        <a href="/recycle" class="file-icon" :class="$route.name === 'recycle' ? 'route-active' : ''">
           <svg class="icon icon-font" aria-hidden="true">
             <use xlink:href="#icon-huishouzhan"></use>
           </svg>
@@ -67,7 +76,7 @@
       }
     },
     created () {
-
+      console.log(this.$route.name)
     },
     methods: {
       start (type) {
@@ -103,49 +112,52 @@
 </script>
 
 <style lang="less" rel="stylesheet/less" type="text/less">
-  .desk-left{
+  .desk-left {
     display: inline-block;
-    width:180px;
+    width: 180px;
     text-align: center;
-  .new-btn{
-    background-color: #41464b;
-    width:80px;
-    border: none;
-    border-radius: 0;
-  &:hover{
-     box-shadow: 0 2px 6px 0 rgba(0,0,0,.2);
-   }
-  }
-    .create-list{
+    .new-btn {
+      background-color: #41464b;
+      width: 80px;
+      border: none;
+      border-radius: 0;
+      &:hover {
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .2);
+      }
+    }
+    .create-list {
       text-align: left;
-      &>li{
-        height:30px;
+      & > li {
+        height: 30px;
         line-height: 30px;
         cursor: pointer;
-        .create-type{
+        .create-type {
           margin-right: 20px;
         }
       }
     }
-  .file-tree{
-    margin-top:20px;
-  .icon{
-    font-size: 16px;
-  }
-  .file-icon{
-    display: inline-block;
-    width:120px;
-    font-size:14px;
-    color: #41464b;
-    text-align: left;
-  .icon-text{
-    margin-left:15px;
-  }
-  }
-  .tree-sub{
-    padding: 5px 0;
-    color: #41464b;
-  }
-  }
+    .file-tree {
+      margin-top: 20px;
+      .icon {
+        font-size: 16px;
+      }
+      .file-icon {
+        display: inline-block;
+        width: 120px;
+        font-size: 14px;
+        color: #a5a5a5;
+        text-align: left;
+        .icon-text {
+          margin-left: 15px;
+        }
+        &.route-active{
+          color: #41464b;
+        }
+      }
+      .tree-sub {
+        padding: 5px 0;
+        color: #41464b;
+      }
+    }
   }
 </style>
