@@ -2,8 +2,8 @@
   <div class="nav-bar">
     <a href="/" class="logo"></a>
     <ul class="func-list">
-      <li v-show="token === ''"><a href="/signup">登录</a></li>
-      <li v-show="token !== ''"><a href="/desktop">进入文档</a></li>
+      <li v-show="token === '' || token === undefined"><a href="/signup">登录</a></li>
+      <li v-show="token !== undefined"><a href="/desktop">进入文档</a></li>
       <li><a href="">功能</a></li>
       <li><a href="/solution">解决方案</a></li>
       <li><a href="">更多</a></li>

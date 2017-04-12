@@ -7,6 +7,11 @@ import config from './request'
 var TOKEN = Cookies.get('token')
 axios.defaults.headers.common['token'] = TOKEN
 export default {
+  getUser () {
+    return axios.get(config.baseUrl + 'user').then((response) => {
+      return response.data
+    })
+  },
   getFiles () {
     return axios.get(config.baseUrl + 'desk').then((response) => {
       return response.data

@@ -7,6 +7,8 @@ import Star from '@/views/Star'
 import Recycle from '@/views/Recycle'
 import Account from '@/views/Account'
 import Solution from '@/views/Solution'
+import Profile from '@/views/Profile'
+import Friends from '@/views/Friends'
 export default [
   {
     path: '/signup',
@@ -52,5 +54,15 @@ export default [
     path: '/solution',
     name: 'solution',
     component: Solution
+  },
+  {
+    path: '/friends',
+    name: 'friends',
+    component: Friends
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile
   }
 ]
