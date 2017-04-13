@@ -57,7 +57,7 @@
 
   body {
     line-height: 1.6;
-    background-color: #f0f0f0 !important;
+    background-color: #f7f7f7 !important;
   }
 
   h1, h2, h3, h4, h5, h6 {

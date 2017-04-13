@@ -93,10 +93,11 @@
               var iconTxt = 'ios-paper-outline'
               if (row.type === 1) {
                 iconTxt = 'ios-paper-outline'
+                return `<a href="/editor/` + row.file_id + `"><Icon type="` + iconTxt + `"></Icon>` + row.filename + `</a>`
               } else {
                 iconTxt = 'ios-folder'
+                return `<a href="/folder/` + row.file_id + `"><Icon type="` + iconTxt + `"></Icon>` + row.filename + `</a>`
               }
-              return `<a href="/editor/` + row.file_id + `"><Icon type="` + iconTxt + `"></Icon>` + row.filename + `</a>`
             }
           },
           {

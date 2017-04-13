@@ -5,7 +5,26 @@
       <left-component></left-component>
       <div class="recent-right">
         <p class="right-title">最近文件</p>
-        <Table :columns="tableHeader" :data="recentList"></Table>
+        <!--<Table :columns="tableHeader" :data="recentList"></Table>-->
+         <div class="table-header">
+           <span class="header-name list-table-cell">文件名</span>
+           <span class="header-auth list-table-cell">创建者</span>
+           <span class="operate-time list-table-cell">操作时间</span>
+         </div>
+        <ul class="table-body">
+          <li v-for="dateItem in recentList">
+            <div class="update-day">
+              {{dateItem.date}}
+            </div>
+            <ul>
+              <li class="table-item-row" v-for="item in dateItem.files">
+                <Icon type="android-bookmark" :class="item.is_star === 1 ? 'star-color' : 'un-star-color'"></Icon>
+                <a href=""></a>
+                {{item.filename}}--{{item.creator_name}}--{{item.update_time}}
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -111,7 +130,48 @@
             }
           }
         }
+        .table-header{
+          width:840px;
+          overflow: hidden;
+          .list-table-cell{
+            display: inline-block;
+            float: left;
+          }
+          .header-name{
+            width:520px;
+          }
+          .header-auth{
+            width:120px;
+          }
+        }
+        .table-body{
+          display: block;
+          .update-day{
+            display: block;
+            height: 30px;
+            line-height: 30px;
+            clear: both;
+            color: #a5a5a5;
+            font-weight:600;
+            text-indent: 24px;
+            background: rgba(232,236,241,.25);
+            border-bottom: 1px solid #e5e5e5;
+          }
+          .table-item-row{
+            display: block;
+            position: relative;
+            height: 44px;
+            line-height: 44px;
+            border-bottom: 1px solid #e5e5e5;
+          }
+        }
       }
+    }
+    .star-color{
+      color: #6ea3e6;
+    }
+    .un-star-color{
+      color: #a5a5a5;
     }
   }
 </style>

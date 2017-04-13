@@ -26,7 +26,7 @@
   .bread-crumb{
     width:820px;
     margin:0 auto;
-    padding:15px 0;
+    padding:20px 0 15px;
     .ivu-breadcrumb {
       font-size: 12px;
     }

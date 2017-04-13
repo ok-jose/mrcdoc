@@ -17,8 +17,13 @@ export default {
       return response.data
     })
   },
-  createFile (filenname, type) {
-    return axios.post(config.baseUrl + 'files', {filename: filenname, type: type}).then((response) => {
+  getFolderFiles (folderId) {
+    return axios.get(config.baseUrl + 'folder/' + folderId).then((response) => {
+      return response.data
+    })
+  },
+  createFile (filenname, type, inFolder) {
+    return axios.post(config.baseUrl + 'files', {filename: filenname, type: type, in_folder: inFolder}).then((response) => {
       return response.data
     })
   },

@@ -4,7 +4,7 @@
     <div class="desk-content">
       <left-component @uploadFiles="getFileList"></left-component>
       <div class="desk-right">
-        <p class="right-title">我的桌面</p>
+        <p class="right-title">我的桌面>文件夹</p>
         <Table :row-class-name="hoverShow" :columns="tableHeader" :data="tableData"></Table>
       </div>
     </div>
@@ -120,7 +120,7 @@
                       <Poptip placement="bottom" width="150">
                         <Icon type="ios-gear" size="16" class="nodis"></Icon>
                         <div class="api" slot="content">
-                        <i-input type="text" size="small" value="${row.filename}" on-blur="operation('${row.file_id}', 5)"></i-input>
+                        <input type="text" value="` + row.filename + `">
                           <ul class="setting-list">
                             <li @click="operation('${row.file_id}', ${row.is_star})"><Icon type="bookmark" size="16"></Icon><span v-if="${row.is_star === 0}">收藏</span><span v-else>取消收藏</span>
                             </li>
@@ -139,23 +139,14 @@
     },
     created () {
       this.getFileList()
-      window.breadPath = ['23', '34']
     },
     methods: {
       getFileList () {
-        if (this.$route.name === 'desktop') {
-          service.getFiles().then((data) => {
-            if (data.status_code === 200) {
-              this.tableData = data.data.files
-            }
-          })
-        } else if (this.$route.name === 'folder') {
-          service.getFolderFiles(this.$route.params.file_id).then((data) => {
-            if (data.status_code === 200) {
-              this.tableData = data.data.files
-            }
-          })
-        }
+        service.getFolderFiles(this.$route.params.file_id).then((data) => {
+          if (data.status_code === 200) {
+            this.tableData = data.data.files
+          }
+        })
       },
       createFile () {
         service.createFile('jose的文件夹', '0').then((data) => {
@@ -179,8 +170,6 @@
           console.log('删除')
           this.modalData.delModal = true
 //          this.operationID = fileId
-        } else if (type === 5) {
-          console.log('保存')
         }
       },
       starOrNo (type) {
@@ -238,7 +227,7 @@
           }
           .ivu-table {
             background-color: transparent !important;
-            font-size: 14px !important;
+            font-size: 14px;
             td {
               background-color: transparent !important;
               .icon-font {
@@ -268,12 +257,12 @@
           }
         }
       }
+      .ivu-icon{
+        width: 30px;
+      }
     }
     .nodis {
       display: none;
-    }
-    .ivu-icon{
-      width: 28px;
     }
   }
 </style>

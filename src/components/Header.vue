@@ -50,7 +50,7 @@
               <li><a href="/profile">账号设置</a></li>
               <li><a href="/friends">好友列表</a></li>
               <li>使用帮助</li>
-              <li>退出登录</li>
+              <li @click="signOut">退出登录</li>
             </ul>
           </div>
         </Poptip>
@@ -76,6 +76,11 @@
             this.profile = data.data.userinfo
           }
         })
+      },
+      signOut () {
+        //eslint-disable-next-line
+        Cookies.set('token','');
+        this.$router.push({path: 'signup'})
       }
     }
   }

@@ -23,5 +23,17 @@ export default {
       .catch(function (error) {
         console.log(error)
       })
+  },
+  userSignUp (username, password) {
+    return axios.post(config.baseUrl + 'register', {
+      username: username,
+      password: password
+    })
+      .then(function (response) {
+        return response.data
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   }
 }

@@ -4,7 +4,7 @@
       <p class="con-title"></p>
       <Form ref="formValidate" v-model="formValidate">
         <Form-item prop="user">
-          <Input type="text" v-model="formValidate.user" placeholder="邮箱"></Input>
+          <Input type="text" v-model="formValidate.user" placeholder="用户名"></Input>
         </Form-item>
         <Form-item prop="password">
           <Input type="password" v-model="formValidate.password" placeholder="密码">
@@ -12,7 +12,7 @@
           </Input>
         </Form-item>
         <Form-item>
-          <Button type="primary" @click.native="handleSubmit('formInline')">登录</Button>
+          <Button type="primary" @click.native="handleSubmit">登录</Button>
         </Form-item>
         <Form-item>
           <span class="other-way">或</span>
@@ -22,18 +22,18 @@
     </div>
     <div class="sign-con" v-show="!signWay">
       <p class="con-title"></p>
-      <Form ref="formRegister" v-model="formRegister" :rules="ruleRegister">
+      <Form ref="formRegister" v-model="formRegister">
         <Form-item prop="nickname">
           <Input type="text" v-model="formRegister.nickname" placeholder="昵称"></Input>
         </Form-item>
-        <Form-item prop="email">
-          <Input type="text" v-model="formRegister.email" placeholder="注册邮箱"></Input>
-        </Form-item>
+        <!--<Form-item prop="email">-->
+          <!--<Input type="text" v-model="formRegister.email" placeholder="注册邮箱"></Input>-->
+        <!--</Form-item>-->
         <Form-item prop="password">
           <Input type="password" v-model="formRegister.password" placeholder="密码"></Input>
         </Form-item>
         <Form-item>
-          <Button type="primary" @click="handleSubmit('formInline')">注册</Button>
+          <Button type="primary" @click.native="handleSignUp">注册</Button>
         </Form-item>
         <Form-item>
           <span class="other-way">或</span>
@@ -82,12 +82,34 @@
       }
     },
     methods: {
-      handleSubmit (name) {
+      handleSubmit () {
         service.userLogin(this.formValidate.user, this.formValidate.password).then((data) => {
           if (data.status_code === 200) {
             // eslint-disable-next-line
             Cookies.set('token',data.data.token);
             this.$router.push({path: 'desktop'})
+          }
+        })
+      },
+      handleSignUp () {
+        service.userSignUp(this.formRegister.nickname, this.formRegister.password).then((data) => {
+          if (data.status_code === 200) {
+            this.$Notice.open({
+              title: '注册提示',
+              desc: '恭喜，注册成功',
+              duration: 2,
+              onClose: () => {
+                this.changeSign()
+                this.formValidate.user = this.formRegister.nickname
+                this.formValidate.password = this.formRegister.password
+              }
+            })
+          } else if (data.status_code === 240) {
+            this.$Notice.open({
+              title: '注册提示',
+              duration: 2,
+              desc: data.message
+            })
           }
         })
       },

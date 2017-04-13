@@ -10,7 +10,7 @@
           </a>
         </Tooltip>
         <span class="cur-file">
-          我的毕业论文
+          {{filename}}
         </span>
         <Tooltip content="标星">
           <a href="javascript:;" class="mark-star">
@@ -20,7 +20,7 @@
           </a>
         </Tooltip>
         <span class="update-time">
-          2/16 15:36更新
+          {{updateTime}}更新
         </span>
       </div>
       <div class="header-right">
@@ -85,6 +85,8 @@
       return {
         name: 'base-example',
         content: '<h2>I am Example</h2>',
+        filename: '',
+        updateTime: '',
         editorOption: {
           toolbar: {
             container: '#toolbar'
@@ -95,6 +97,8 @@
     created () {
       service.getThisFile(this.$route.params.file_id).then((response) => {
         this.content = response.data.file.content
+        this.filename = response.data.file.filename
+        this.updateTime = response.data.file.update_time
       })
     },
     methods: {
