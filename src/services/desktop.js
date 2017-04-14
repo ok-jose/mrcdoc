@@ -22,6 +22,11 @@ export default {
       return response.data
     })
   },
+  getRecentFile () {
+    return axios.get(config.baseUrl + 'recent').then((response) => {
+      return response.data
+    })
+  },
   createFile (filenname, type, inFolder) {
     return axios.post(config.baseUrl + 'files', {filename: filenname, type: type, in_folder: inFolder}).then((response) => {
       return response.data

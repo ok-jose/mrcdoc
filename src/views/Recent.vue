@@ -5,7 +5,6 @@
       <left-component></left-component>
       <div class="recent-right">
         <p class="right-title">最近文件</p>
-        <!--<Table :columns="tableHeader" :data="recentList"></Table>-->
          <div class="table-header">
            <span class="header-name list-table-cell">文件名</span>
            <span class="header-auth list-table-cell">创建者</span>
@@ -18,9 +17,14 @@
             </div>
             <ul>
               <li class="table-item-row" v-for="item in dateItem.files">
-                <Icon type="android-bookmark" :class="item.is_star === 1 ? 'star-color' : 'un-star-color'"></Icon>
-                <a href=""></a>
-                {{item.filename}}--{{item.creator_name}}--{{item.update_time}}
+                <span @click="operation(item.file_id, item.is_star)" >
+                  <Icon type="android-bookmark" :class="item.is_star === 1 ? 'star-color' : 'un-star-color'" class="list-table-cell"></Icon>
+                </span>
+                <a :href="/editor/+item.file_id">
+                  <span class="list-table-cell file-name-cell">{{item.filename}}</span>
+                </a>
+                <span class="list-table-cell file-creator-cell">{{item.creator_name}}</span>
+                <span class="list-table-cell file-time-cell">{{item.update_time_fmt}}</span>
               </li>
             </ul>
           </li>
@@ -32,7 +36,7 @@
 <script>
   import headerComponent from '../components/Header.vue'
   import leftComponent from '../components/Left.vue'
-  import service from '../services/recent'
+  import service from '../services/desktop'
   export default {
     components: {
       headerComponent,
@@ -40,26 +44,7 @@
     },
     data () {
       return {
-        tableHeader: [
-          {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-          },
-          {
-            title: '文件名',
-            key: 'filename'
-          },
-          {
-            title: '操作时间',
-            key: 'update_time',
-            sortable: true
-          },
-          {
-            title: '操作',
-            key: 'file_id'
-          }
-        ],
+        operationId: '',
         recentList: []
       }
     },
@@ -71,6 +56,23 @@
         service.getRecentFile().then((data) => {
           if (data.status_code === 200) {
             this.recentList = data.data.recent_files
+          }
+        })
+      },
+      operation (fileId, type) {
+        this.operationID = fileId
+        if (type === 0) {
+          console.log('收藏')
+          this.starOrNo(1)
+        } else if (type === 1) {
+          console.log('收藏')
+          this.starOrNo(0)
+        }
+      },
+      starOrNo (type) {
+        service.withOrWithout(this.operationID, type).then((data) => {
+          if (data.status_code === 200) {
+            this.getReLists()
           }
         })
       }
@@ -130,13 +132,13 @@
             }
           }
         }
+        .list-table-cell{
+          display: inline-block;
+          text-align: left;
+        }
         .table-header{
           width:840px;
           overflow: hidden;
-          .list-table-cell{
-            display: inline-block;
-            float: left;
-          }
           .header-name{
             width:520px;
           }
@@ -163,6 +165,12 @@
             height: 44px;
             line-height: 44px;
             border-bottom: 1px solid #e5e5e5;
+          }
+          .file-name-cell{
+            width:492px;
+          }
+          .file-creator-cell{
+            width:120px;
           }
         }
       }
