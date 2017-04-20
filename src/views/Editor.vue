@@ -24,35 +24,6 @@
         </span>
       </div>
       <div class="header-right">
-        <!--<Menu mode="horizontal" theme="light" active-key="1">-->
-        <!--<Menu-item key="1">-->
-        <!--<Icon type="ios-paper"></Icon>-->
-        <!--内容管理-->
-        <!--</Menu-item>-->
-        <!--<Menu-item key="2">-->
-        <!--<Icon type="ios-people"></Icon>-->
-        <!--用户管理-->
-        <!--</Menu-item>-->
-        <!--<Submenu key="3">-->
-        <!--<template slot="title">-->
-        <!--<Icon type="stats-bars"></Icon>-->
-        <!--统计分析-->
-        <!--</template>-->
-        <!--<Menu-group title="使用">-->
-        <!--<Menu-item key="3-1">新增和启动</Menu-item>-->
-        <!--<Menu-item key="3-2">活跃分析</Menu-item>-->
-        <!--<Menu-item key="3-3">时段分析</Menu-item>-->
-        <!--</Menu-group>-->
-        <!--<Menu-group title="留存">-->
-        <!--<Menu-item key="3-4">用户留存</Menu-item>-->
-        <!--<Menu-item key="3-5">流失用户</Menu-item>-->
-        <!--</Menu-group>-->
-        <!--</Submenu>-->
-        <!--<Menu-item key="4">-->
-        <!--<Icon type="settings"></Icon>-->
-        <!--综合设置-->
-        <!--</Menu-item>-->
-        <!--</Menu>-->
       </div>
     </div>
     <div id="toolbar">
@@ -61,8 +32,8 @@
     <div class="qi-con">
       <!-- quill-editor -->
       <quill-editor ref="myTextEditor"
-                    v-model="content"
-                    :config="editorOption"
+                    :content="content"
+                    :options="editorOption"
                     @blur="onEditorBlur($event)"
                     @focus="onEditorFocus($event)"
                     @ready="onEditorReady($event)"
@@ -77,6 +48,8 @@
   import Vue from 'vue'
   import VueQuillEditor from 'vue-quill-editor'
   Vue.use(VueQuillEditor)
+  var socketServer = 'ws://115.159.113.28:3890'
+  var ws
   export default {
     components: {
       VueQuillEditor
@@ -84,7 +57,8 @@
     data () {
       return {
         name: 'base-example',
-        content: '<h2>I am Example</h2>',
+        pid: this.$route.params.file_id,
+        content: "[{ insert: 'Hello ' },{ insert: 'World!', attributes: { bold: true } },{ insert: '\n' }]",
         filename: '',
         updateTime: '',
         editorOption: {
@@ -95,11 +69,13 @@
       }
     },
     created () {
-      service.getThisFile(this.$route.params.file_id).then((response) => {
-        this.content = response.data.file.content
-        this.filename = response.data.file.filename
-        this.updateTime = response.data.file.update_time
-      })
+      ws = new WebSocket(socketServer)
+      console.log(ws)
+//      service.getThisFile(this.pid).then((response) => {
+//        this.content = response.data.file.content
+//        this.filename = response.data.file.filename
+//        this.updateTime = response.data.file.update_time
+//      })
     },
     methods: {
       onEditorBlur (editor) {
@@ -109,16 +85,40 @@
         console.log('editor focus!', editor)
       },
       onEditorReady (editor) {
+        service.getThisFile(this.pid).then((response) => {
+          this.content = response.data.file.content
+          this.filename = response.data.file.filename
+          this.updateTime = response.data.file.update_time
+        })
+        ws.onopen = (evt) => {
+          var message = {}
+          message.type = 'init'
+          message.doc_id = this.pid
+          // eslint-disable-next-line
+          var message = JSON.stringify(message)
+          ws.send(message)
+        }
+        ws.onmessage = function (evt) {
+          debugger
+          console.log(evt.data)
+          // eslint-disable-next-line
+          var messageO = eval('(' + evt.data + ')')
+          if (messageO.type !== 'init') {
+            var delta = messageO.delta
+            this.content = delta
+          }
+        }
         console.log('editor ready!', editor)
       },
       onEditorChange (editor) {
         var message = {}
         message.type = 'message'
         message.delta = editor.delta
-        message.doc_id = 'public'
+        message.doc_id = this.$route.params.file_id
         message.content = editor.text
         message = JSON.stringify(message)
-        console.log('editor change!', message)
+        console.log('editor change!', message, ws)
+        ws.send(message)
       },
       routerBack () {
         this.$router.go(-1)
@@ -130,7 +130,12 @@
       }
     },
     mounted () {
-      console.log('this is my editor', this.editor)
+//      service.getThisFile(this.pid).then((response) => {
+//        this.content = response.data.file.content
+//        this.filename = response.data.file.filename
+//        this.updateTime = response.data.file.update_time
+//      })
+//      console.log('this is my editor', this.editor)
 //      setTimeout(() => {
 //        this.content = '<h1>i am changed!</h1>'
 //      }, 18000)
