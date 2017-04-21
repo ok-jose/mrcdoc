@@ -46,5 +46,30 @@ export default {
     return axios.get(config.baseUrl + 'stars').then((response) => {
       return response.data
     })
+  },
+  getFriends () {
+    return axios.get(config.baseUrl + 'friends').then((response) => {
+      return response.data
+    })
+  },
+  searchFriend (keywords) {
+    return axios.get(config.baseUrl + 'search/' + keywords).then((response) => {
+      return response.data
+    })
+  },
+  postFriendId (fid) {
+    return axios.post(config.baseUrl + 'friends', {fid: fid}).then((response) => {
+      return response.data
+    })
+  },
+  getWriterLists (fileId) {
+    return axios.get(config.baseUrl + 'writers?file_id=' + fileId).then((response) => {
+      return response.data
+    })
+  },
+  addCoWriters (fileId, uids) {
+    return axios.post(config.baseUrl + 'writers', {file_id: fileId, writer_ids: uids}).then((response) => {
+      return response.data
+    })
   }
 }

@@ -31,6 +31,29 @@
         </li>
       </ul>
     </Modal>
+    <Modal
+    v-model="modalData.coModal"
+    title="协作" width="400">
+      <div class="writerList" v-show="modalData.writerState">
+        <p>协作者列表</p>
+        <ul>
+          <li v-for="item in writerLists">
+            {{item.writer_name}}
+          </li>
+        </ul>
+      </div>
+      <div class="addWriter" v-show="!modalData.writerState">
+        <p>添加协作者</p>
+        <Checkbox-group vertical v-model="writerGroup">
+          <Checkbox v-for="item in friendLists" :label="item.fid">{{item.username}}</Checkbox>
+        </Checkbox-group>
+        </li>
+      </div>
+      <div slot="footer">
+        <Button v-show="modalData.writerState" type="primary" @click="modalData.writerState=!modalData.writerState">添加协作者</Button>
+        <Button v-show="!modalData.writerState" type="primary" @click="addCoWriters()">确认添加</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 <script>
@@ -48,7 +71,9 @@
       return {
         modalData: {
           delModal: false,
-          moveModal: false
+          coModal: false,
+          moveModal: false,
+          writerState: true
         },
         operationId: '',
         tableHeader: [
@@ -117,7 +142,7 @@
             className: 'tr-setting',
             render (row) {
               return `
-                      <Poptip placement="bottom" width="150">
+                      <Poptip trigger="hover" placement="bottom" width="150">
                         <Icon type="ios-gear" size="16" class="nodis"></Icon>
                         <div class="api" slot="content">
                         <i-input type="text" size="small" value="${row.filename}" on-blur="operation('${row.file_id}', 5)"></i-input>
@@ -125,7 +150,7 @@
                             <li @click="operation('${row.file_id}', ${row.is_star})"><Icon type="bookmark" size="16"></Icon><span v-if="${row.is_star === 0}">收藏</span><span v-else>取消收藏</span>
                             </li>
                             <li @click="operation('${row.file_id}', 2)"><Icon type="android-arrow-forward" size="16"></Icon>移动</li>
-                            <li @click="operation('${row.file_id}', 3)"><Icon type="ios-color-filter-outline" size="16"></Icon>协作</li>
+                            <li @click="operation('${row.file_id}', 3)" v-show="${row.type} === 1"><Icon type="ios-color-filter-outline" size="16"></Icon>协作</li>
                             <li @click="operation('${row.file_id}', 4)"><Icon type="ios-trash-outline" size="16"></Icon>删除</li>
                           </ul>
                         </div>
@@ -134,11 +159,15 @@
             }
           }
         ],
-        tableData: []
+        tableData: [],
+        writerLists: [],
+        friendLists: [],
+        writerGroup: []
       }
     },
     created () {
       this.getFileList()
+      this.getFriendLists()
       window.breadPath = ['23', '34']
     },
     methods: {
@@ -175,6 +204,8 @@
           this.modalData.moveModal = true
         } else if (type === 3) {
           console.log('协作')
+          this.modalData.coModal = true
+          this.getWriterList(fileId)
         } else if (type === 4) {
           console.log('删除')
           this.modalData.delModal = true
@@ -195,6 +226,31 @@
           if (data.status_code === 200) {
             this.modalData.delModal = false
             this.getFileList()
+          }
+        })
+      },
+      getWriterList (fileId) {
+        service.getWriterLists(fileId).then((data) => {
+          if (data.status_code === 200) {
+            this.writerLists = data.data.writers
+          }
+        })
+      },
+      getFriendLists () {
+        service.getFriends().then((data) => {
+          if (data.status_code === 200) {
+            this.friendLists = data.data.friends
+          }
+        })
+      },
+      addCoWriters () {
+        this.modalData.writerState = !this.modalData.writerState
+        let fileId = this.operationID
+        let writerStr = this.writerGroup.toString()
+        console.log(writerStr)
+        service.addCoWriters(fileId, writerStr).then((data) => {
+          if (data.status_code === 200) {
+            this.getWriterList(fileId)
           }
         })
       },
@@ -274,6 +330,15 @@
     }
     .ivu-icon{
       width: 28px;
+    }
+    .writerList{
+    text-align: left;
+    }
+    .addWriter{
+      text-align: left;
+      .ivu-checkbox-group-item{
+        display: block;
+      }
     }
   }
 </style>

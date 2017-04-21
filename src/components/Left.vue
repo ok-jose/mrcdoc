@@ -31,36 +31,24 @@
     <ul class="file-tree">
       <li class="tree-sub">
         <a href="/desktop" class="file-icon" :class="$route.name === 'desktop'|| $route.name === 'folder' ? 'route-active' : ''">
-          <!--<svg class="icon icon-font" aria-hidden="true">-->
-            <!--<use xlink:href="#icon-zhuomian"></use>-->
-          <!--</svg>-->
           <Icon type="ios-albums-outline"></Icon>
           <span class="icon-text">我的桌面</span>
         </a>
       </li>
       <li class="tree-sub">
         <a href="/recent" class="file-icon" :class="$route.name === 'recent' ? 'route-active' : ''">
-          <!--<svg class="icon icon-font" aria-hidden="true">-->
-            <!--<use xlink:href="#icon-iconfontshijian"></use>-->
-          <!--</svg>-->
           <Icon type="ios-clock-outline"></Icon>
           <span class="icon-text">最近文件</span>
         </a>
       </li>
       <li class="tree-sub">
         <a href="/star" class="file-icon" :class="$route.name === 'star' ? 'route-active' : ''">
-          <!--<svg class="icon icon-font" aria-hidden="true">-->
-            <!--<use xlink:href="#icon-shuqian1"></use>-->
-          <!--</svg>-->
           <Icon type="android-bookmark"></Icon>
           <span class="icon-text">标星文件</span>
         </a>
       </li>
       <li class="tree-sub">
         <a href="/recycle" class="file-icon" :class="$route.name === 'recycle' ? 'route-active' : ''">
-          <!--<svg class="icon icon-font" aria-hidden="true">-->
-            <!--<use xlink:href="#icon-huishouzhan"></use>-->
-          <!--</svg>-->
           <Icon type="ios-trash-outline"></Icon>
           <span class="icon-text">回收站</span>
         </a>

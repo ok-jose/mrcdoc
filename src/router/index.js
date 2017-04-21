@@ -9,7 +9,6 @@ import Account from '@/views/Account'
 import Solution from '@/views/Solution'
 import Profile from '@/views/Profile'
 import Friends from '@/views/Friends'
-// import Folder from '@/views/Folder'
 export default [
   {
     path: '/signup',

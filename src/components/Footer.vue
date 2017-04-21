@@ -14,7 +14,7 @@
               <div class="tit">在线客服</div>
               <ul>
                 <li>工作时间：9:30 - 18:30（节假日休息）</li>
-                <li>客服电话：010 - 56538600</li>
+                <li>客服电话：010 - XXXXXXX</li>
                 <li>E-mail：282923166.com</li>
               </ul>
             </div>
@@ -29,7 +29,7 @@
             </div>
             <a target="_blank" href="javascript:;" class="footer-logo"></a>
           </div>
-          <div class="copyright">京ICP备京ICP证130164号 / 北京市公安局朝阳分局备案编号：110105000501<br>Copyright © 2006-2014 JoseLee</div>
+          <div class="copyright">京ICP备京ICP证XXXXXX号 / 北京市公安局朝阳分局备案编号：XXXXXXXXXXX<br>Copyright © 2006-2017 JoseLee ❤ Woffee</div>
         </div>
       </div>
     </div>
