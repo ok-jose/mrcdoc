@@ -32,8 +32,8 @@
       </ul>
     </Modal>
     <Modal
-    v-model="modalData.coModal"
-    title="协作" width="400">
+      v-model="modalData.coModal"
+      title="协作" width="400">
       <div class="writerList" v-show="modalData.writerState">
         <p>协作者列表</p>
         <ul>
@@ -50,7 +50,9 @@
         </li>
       </div>
       <div slot="footer">
-        <Button v-show="modalData.writerState" type="primary" @click="modalData.writerState=!modalData.writerState">添加协作者</Button>
+        <Button v-show="modalData.writerState" type="primary" @click="modalData.writerState=!modalData.writerState">
+          添加协作者
+        </Button>
         <Button v-show="!modalData.writerState" type="primary" @click="addCoWriters()">确认添加</Button>
       </div>
     </Modal>
@@ -75,6 +77,7 @@
           moveModal: false,
           writerState: true
         },
+        curValue: '',
         operationId: '',
         tableHeader: [
 //          {
@@ -120,10 +123,10 @@
               var iconTxt = 'ios-paper-outline'
               if (row.type === 1) {
                 iconTxt = 'ios-paper-outline'
-                return `<a href="/editor/` + row.file_id + `"><Icon type="` + iconTxt + `"></Icon>` + row.filename + `</a>`
+                return `<a href="/editor/` + row.file_id + `"><Icon type="` + iconTxt + `" size="20"></Icon>` + row.filename + `</a>`
               } else {
                 iconTxt = 'ios-folder'
-                return `<a href="/folder/` + row.file_id + `"><Icon type="` + iconTxt + `"></Icon>` + row.filename + `</a>`
+                return `<a href="/folder/` + row.file_id + `"><Icon type="` + iconTxt + `" size="20"></Icon>` + row.filename + `</a>`
               }
             }
           },
@@ -143,9 +146,9 @@
             render (row) {
               return `
                       <Poptip trigger="hover" placement="bottom" width="150">
-                        <Icon type="ios-gear" size="16" class="nodis"></Icon>
+                        <Icon type="ios-gear" size="16" class="nodis" @click="curFileValue('${row.filename}')"></Icon>
                         <div class="api" slot="content">
-                        <i-input type="text" size="small" value="${row.filename}" on-blur="operation('${row.file_id}', 5)"></i-input>
+                        <i-input type="text" size="small" value="${row.filename}" @on-blur="autoSave('${row.file_id}', '${row.filename}')"></i-input>
                           <ul class="setting-list">
                             <li @click="operation('${row.file_id}', ${row.is_star})"><Icon type="bookmark" size="16"></Icon><span v-if="${row.is_star === 0}">收藏</span><span v-else>取消收藏</span>
                             </li>
@@ -191,6 +194,9 @@
           console.log(data)
         })
       },
+      curFileValue (fileName) {
+        this.curValue = fileName
+      },
       operation (fileId, type) {
         this.operationID = fileId
         if (type === 0) {
@@ -216,6 +222,13 @@
       },
       starOrNo (type) {
         service.withOrWithout(this.operationID, type).then((data) => {
+          if (data.status_code === 200) {
+            this.getFileList()
+          }
+        })
+      },
+      autoSave (fileId, filename) {
+        service.renameFile(fileId, filename).then((data) => {
           if (data.status_code === 200) {
             this.getFileList()
           }
@@ -328,15 +341,16 @@
     .nodis {
       display: none;
     }
-    .ivu-icon{
+    .ivu-icon {
       width: 28px;
+      vertical-align: middle;
     }
-    .writerList{
-    text-align: left;
-    }
-    .addWriter{
+    .writerList {
       text-align: left;
-      .ivu-checkbox-group-item{
+    }
+    .addWriter {
+      text-align: left;
+      .ivu-checkbox-group-item {
         display: block;
       }
     }

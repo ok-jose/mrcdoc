@@ -185,6 +185,7 @@
           margin-bottom: 10px;
           cursor: pointer;
           color: #808080;
+          transition: all 0.2s ease-in-out;
           /*border-right: 2px solid #6ea3e6;*/
           &:hover,&.cur-show{
             border-right: 2px solid #6ea3e6;

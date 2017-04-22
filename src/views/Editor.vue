@@ -4,9 +4,9 @@
       <div class="header-left">
         <Tooltip content="返回">
           <a href="javascript:;" class="history-back" @click="routerBack">
-            <svg class="icon icon-font" aria-hidden="true">
-              <use xlink:href="#icon-fanhui1"></use>
-            </svg>
+            <a href="javascript:;" class="mark-star">
+              <Icon type="android-arrow-back"></Icon>
+            </a>
           </a>
         </Tooltip>
         <span class="cur-file">
@@ -14,9 +14,7 @@
         </span>
         <Tooltip content="标星">
           <a href="javascript:;" class="mark-star">
-            <svg class="icon icon-font" aria-hidden="true">
-              <use xlink:href="#icon-shuqian1"></use>
-            </svg>
+            <Icon type="bookmark" size="16"></Icon>
           </a>
         </Tooltip>
         <span class="update-time">

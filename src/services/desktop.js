@@ -32,6 +32,11 @@ export default {
       return response.data
     })
   },
+  renameFile (fileId, filename) {
+    return axios.put(config.baseUrl + 'files', {file_id: fileId, filename: filename}).then((response) => {
+      return response.data
+    })
+  },
   delFiles (fileId) {
     return axios.delete(config.baseUrl + 'files?file_ids=' + fileId).then((response) => {
       return response.data

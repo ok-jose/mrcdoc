@@ -158,4 +158,20 @@
   .ivu-icon{
     width: 28px;
   }
+  .ivu-btn-primary{
+    background-color: #41464b !important;
+    border: none !important;
+    border-radius: 0 !important;
+    &:hover {
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .2) !important;
+    }
+  }
+  .ivu-btn-success{
+    background-color: #8a8787 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    &:hover {
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .2) !important;
+    }
+  }
 </style>
