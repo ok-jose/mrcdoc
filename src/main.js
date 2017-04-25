@@ -6,8 +6,10 @@ import VueRouter from 'vue-router'
 import routers from './router'
 import Iview from 'iview'
 import 'iview/dist/styles/iview.css'
+import Loadsh from 'lodash'
 Vue.use(VueRouter)
 Vue.use(Iview)
+Vue.use(Loadsh)
 
 Vue.config.productionTip = false
 

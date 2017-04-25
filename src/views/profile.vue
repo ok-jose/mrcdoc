@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <header-component></header-component>
+    <header-component :profile="profile" :notice="notice"></header-component>
     <div class="bread-crumb">
       <Breadcrumb separator=">">
         <Breadcrumb-item href="/desktop">桌面</Breadcrumb-item>
@@ -23,19 +23,19 @@
           <div class="info-item">
             <span class="item-name">
               <Icon type="person"></Icon>
-              昵称：<Input v-model="curShow" placeholder="请输入..." style="width: 200px"></Input>
+              昵称：<Input v-model="profile.username" placeholder="请输入..." style="width: 200px"></Input>
             </span>
           </div>
           <div class="info-item">
             <span class="item-name">
               <Icon type="ios-email"></Icon>
-              邮箱：<Input v-model="curShow" placeholder="请输入..." style="width: 200px"></Input>
+              邮箱：<Input v-model="profile.username" placeholder="请输入..." style="width: 200px"></Input>
             </span>
           </div>
           <div class="info-item">
             <span class="item-name">
              <Icon type="locked"></Icon>
-              密码：<Input v-model="curShow" type="password" placeholder="请输入..." style="width: 200px"></Input>
+              密码：<Input v-model="profile.username" type="password" placeholder="请输入..." style="width: 200px"></Input>
             </span>
           </div>
         </div>
@@ -48,7 +48,7 @@
             <Input v-model="searchKey" placeholder="请输入用户昵称" @on-change="search(searchKey)" style="width: 300px"></Input>
             <p>搜索列表</p>
             <Radio-group v-model="friendId" vertical>
-              <Radio :label="item.uid" v-for="item in searchLists" >
+              <Radio :label="item.uid" v-for="item in searchLists" :key="item.uid">
                 <Icon type="person-add"></Icon>
                 <span>{{item.username}}</span>
               </Radio>
@@ -81,6 +81,8 @@
     },
     data () {
       return {
+        profile: [],
+        notice: [],
         addFriend: false,
         searchKey: '',
         friendId: '',
@@ -92,8 +94,23 @@
     },
     created () {
       this.getFriends()
+      this.getUserProfile()
     },
     methods: {
+      getUserProfile () {
+        service.getUser().then((data) => {
+          if (data.status_code === 200) {
+            this.profile = data.data.userinfo
+          }
+        })
+      },
+      getUserNotices () {
+        service.getNotice().then((data) => {
+          if (data.status_code === 200) {
+            this.notice = data.data.notices
+          }
+        })
+      },
       operation (type) {
         switch (type) {
           case 1:

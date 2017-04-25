@@ -1,6 +1,6 @@
 <template>
   <div class="desktop">
-    <header-component></header-component>
+    <header-component :profile="profile" :notice="notice"></header-component>
     <div class="desk-content">
       <left-component @uploadFiles="getFileList"></left-component>
       <div class="desk-right">
@@ -36,16 +36,16 @@
       title="协作" width="400">
       <div class="writerList" v-show="modalData.writerState">
         <p>协作者列表</p>
-        <ul>
+        <ul class="list-ul">
           <li v-for="item in writerLists">
-            {{item.writer_name}}
+            <img class="li-avatar" :src="item.writer_picture!==''?item.writer_picture:defaultAvatar" alt="">{{item.writer_name}}
           </li>
         </ul>
       </div>
       <div class="addWriter" v-show="!modalData.writerState">
         <p>添加协作者</p>
         <Checkbox-group vertical v-model="writerGroup">
-          <Checkbox v-for="item in friendLists" :label="item.fid">{{item.username}}</Checkbox>
+          <Checkbox v-for="item in friendLists" :label="item.fid" :key="item.fid">{{item.username}}</Checkbox>
         </Checkbox-group>
         </li>
       </div>
@@ -71,6 +71,11 @@
     },
     data () {
       return {
+        profile: [],
+        notice: {
+          notice: [],
+          unread: []
+        },
         modalData: {
           delModal: false,
           coModal: false,
@@ -79,12 +84,8 @@
         },
         curValue: '',
         operationId: '',
+        defaultAvatar: require('../assets/avatar.jpg'),
         tableHeader: [
-//          {
-//            type: 'selection',
-//            width: 60,
-//            align: 'center'
-//          },
           {
             title: '收藏',
             key: 'is_star',
@@ -169,11 +170,34 @@
       }
     },
     created () {
+      //eslint-disable-next-line
+      this.getUserProfile()
+      this.getUserNotices()
       this.getFileList()
       this.getFriendLists()
       window.breadPath = ['23', '34']
     },
     methods: {
+      getUserProfile () {
+        service.getUser().then((data) => {
+          if (data.status_code === 200) {
+            this.profile = data.data.userinfo
+          }
+        })
+      },
+      getUserNotices () {
+        service.getNotice().then((data) => {
+          if (data.status_code === 200) {
+            this.notice.notice = data.data.notices
+            let notice = data.data.notices
+            // eslint-disable-next-line
+            this.notice.unread = _.filter(notice, (o) => {
+              return o.is_read < 1
+            })
+//            console.log(this.unNotice)
+          }
+        })
+      },
       getFileList () {
         if (this.$route.name === 'desktop') {
           service.getFiles().then((data) => {
@@ -347,12 +371,25 @@
     }
     .writerList {
       text-align: left;
+      .list-ul{
+        & > li{
+          height:35px;
+          line-height: 35px;
+        }
+      }
     }
     .addWriter {
       text-align: left;
       .ivu-checkbox-group-item {
         display: block;
       }
+    }
+    .li-avatar{
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      margin-left: 10px;
+      vertical-align: middle;
     }
   }
 </style>

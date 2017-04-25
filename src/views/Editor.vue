@@ -56,7 +56,7 @@
       return {
         name: 'base-example',
         pid: this.$route.params.file_id,
-        content: "[{ insert: 'Hello ' },{ insert: 'World!', attributes: { bold: true } },{ insert: '\n' }]",
+        content: '',
         filename: '',
         updateTime: '',
         editorOption: {
@@ -69,11 +69,11 @@
     created () {
       ws = new WebSocket(socketServer)
       console.log(ws)
-//      service.getThisFile(this.pid).then((response) => {
-//        this.content = response.data.file.content
-//        this.filename = response.data.file.filename
-//        this.updateTime = response.data.file.update_time
-//      })
+      service.getThisFile(this.pid).then((response) => {
+        this.content = response.data.file.content
+        this.filename = response.data.file.filename
+        this.updateTime = response.data.file.update_time
+      })
     },
     methods: {
       onEditorBlur (editor) {
@@ -83,11 +83,16 @@
         console.log('editor focus!', editor)
       },
       onEditorReady (editor) {
-        service.getThisFile(this.pid).then((response) => {
-          this.content = response.data.file.content
-          this.filename = response.data.file.filename
-          this.updateTime = response.data.file.update_time
-        })
+//        debugger
+//        console.log(editor.editor)
+//        var st = '{"ops":[{"insert":"First content \nlast"},{"attributes":{"header":1},"insert":"\n"}]}'
+//        editor.editor.delta = st
+//        editor.editor.applyDelta()
+//        service.getThisFile(this.pid).then((response) => {
+//          this.content = response.data.file.content
+//          this.filename = response.data.file.filename
+//          this.updateTime = response.data.file.update_time
+//        })
         ws.onopen = (evt) => {
           var message = {}
           message.type = 'init'
@@ -97,13 +102,13 @@
           ws.send(message)
         }
         ws.onmessage = function (evt) {
-          debugger
           console.log(evt.data)
           // eslint-disable-next-line
           var messageO = eval('(' + evt.data + ')')
           if (messageO.type !== 'init') {
             var delta = messageO.delta
-            this.content = delta
+//            this.content = delta
+            editor.updateContents(delta)
           }
         }
         console.log('editor ready!', editor)
@@ -127,16 +132,10 @@
         return this.$refs.myTextEditor.quillEditor
       }
     },
-    mounted () {
-//      service.getThisFile(this.pid).then((response) => {
-//        this.content = response.data.file.content
-//        this.filename = response.data.file.filename
-//        this.updateTime = response.data.file.update_time
-//      })
-//      console.log('this is my editor', this.editor)
-//      setTimeout(() => {
-//        this.content = '<h1>i am changed!</h1>'
-//      }, 18000)
+    watch: {
+      content: function (newV, oldV) {
+        console.log(newV, oldV)
+      }
     }
   }
 </script>

@@ -4,46 +4,42 @@
       <a href="/desktop" class="logo-bg"></a>
       <div class="avatar-con">
         <Poptip placement="bottom-end" width="400">
-          <Icon class="notice-bell" type="ios-bell-outline" size="20"></Icon>
+          <Badge :count="notice.unread.length">
+            <Icon class="notice-bell" type="ios-bell-outline" size="20"></Icon>
+          </Badge>
           <div class="notice" slot="content">
             <Tabs>
               <Tab-pane label="全部" icon="chatbubble-working">
                 <div class="all-msg">
                   <ul class="msg-list">
-                    <li>
-                      XX 评论了 XX
-                    </li>
-                    <li>
-                      XX 评论了 XX
-                    </li>
-                    <li>
-                      XX 评论了 XX
-                    </li>
-                    <li>
-                      XX 评论了 XX
-                    </li>
-                    <li>
-                      XX 评论了 XX
-                    </li>
-                    <li>
-                      XX 评论了 XX
-                    </li>
-                    <li>
-                      XX 评论了 XX
+                    <li v-for="item in notice.notice">
+                      <div v-if="item.type == 0">
+                        {{item.message}}
+                        <Button type="primary" size="small" @click="dealFriend(item.from_uid, 1, item.id)">同意</Button>
+                        <Button type="success" size="small" @click="dealFriend(item.from_uid, 0, item.id)">拒绝</Button>
+                      </div>
+                      <div v-else>
+                        {{item.from_username}}添加您为文档{{item.filename}}的协作者
+                        <a @click="readDocNotice(item.id, item.file_id, item.is_read)">查看</a>
+                      </div>
                     </li>
                   </ul>
                 </div>
               </Tab-pane>
-              <Tab-pane label="未读(0)" icon="eye">
+              <Tab-pane :label="'未读('+notice.unread.length+')'" icon="eye">
                 <div class="no-read">
-                  gfgfg
+                  <ul>
+                    <li v-for="item in notice.unread">
+                      {{item.type}}
+                    </li>
+                  </ul>
                 </div>
               </Tab-pane>
             </Tabs>
           </div>
         </Poptip>
         <Poptip placement="bottom-end" width="250">
-          <img class="avatar-box" src="../assets/avatar.jpg" width="30" alt="">
+          <img class="avatar-box" :src="profile.picture !== ''?profile.picture:defaultAvatar" width="30" alt="">
           <div class="api" slot="content">
             <ul class="user-center">
               <li>{{profile.username}}</li>
@@ -59,27 +55,38 @@
   </div>
 </template>
 <script>
-  import service from '../services/desktop'
+  import service from '../services/friend'
   export default {
+    props: ['profile', 'notice'],
     data () {
       return {
-        profile: []
+        defaultAvatar: require('../assets/avatar.jpg')
       }
     },
-    created () {
-      this.getUserProfile()
-    },
     methods: {
-      getUserProfile () {
-        service.getUser().then((data) => {
+      dealFriend (fid, type, id) {
+        service.replyFriend(fid, type).then((data) => {
           if (data.status_code === 200) {
-            this.profile = data.data.userinfo
+            this.readFunc(id)
+          }
+        })
+      },
+      readDocNotice (id, fid, isRead) {
+        if (isRead === '0') {
+          this.readFunc(id)
+        }
+        this.$router.push({path: 'editor/' + fid})
+      },
+      readFunc (id) {
+        service.readNotice(id).then((data) => {
+          if (data.status_code === 200) {
+            console.log('read')
           }
         })
       },
       signOut () {
         //eslint-disable-next-line
-        Cookies.set('token','');
+        Cookies.set('token', '')
         this.$router.push({path: 'signup'})
       }
     }
@@ -104,23 +111,23 @@
         vertical-align: middle;
         margin-right: 20px;
       }
-      .ivu-poptip-body{
+      .ivu-poptip-body {
         /*padding:0;*/
       }
-      .notice{
-        .ivu-tabs-nav-container{
+      .notice {
+        .ivu-tabs-nav-container {
           font-size: 12px;
           line-height: 1;
         }
-        .all-msg,.no-read{
-          height:450px;
+        .all-msg, .no-read {
+          height: 450px;
           overflow: scroll;
         }
-        .msg-list{
-          & > li{
-            height:80px;
+        .msg-list {
+          & > li {
+            height: 80px;
             line-height: 80px;
-            &:hover{
+            &:hover {
               background-color: #f0f0f0;
             }
           }
