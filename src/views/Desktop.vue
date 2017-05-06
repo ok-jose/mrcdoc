@@ -1,6 +1,6 @@
 <template>
   <div class="desktop">
-    <header-component :profile="profile" :notice="notice"></header-component>
+    <header-component></header-component>
     <div class="desk-content">
       <left-component @uploadFiles="getFileList"></left-component>
       <div class="desk-right">
@@ -72,10 +72,6 @@
     data () {
       return {
         profile: [],
-        notice: {
-          notice: [],
-          unread: []
-        },
         modalData: {
           delModal: false,
           coModal: false,
@@ -170,9 +166,6 @@
       }
     },
     created () {
-      //eslint-disable-next-line
-      this.getUserProfile()
-      this.getUserNotices()
       this.getFileList()
       this.getFriendLists()
       window.breadPath = ['23', '34']
@@ -194,7 +187,6 @@
             this.notice.unread = _.filter(notice, (o) => {
               return o.is_read < 1
             })
-//            console.log(this.unNotice)
           }
         })
       },

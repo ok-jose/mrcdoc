@@ -12,11 +12,6 @@ export default {
       return response.data
     })
   },
-  getNotice () {
-    return axios.get(config.baseUrl + 'notices').then((response) => {
-      return response.data
-    })
-  },
   getFiles () {
     return axios.get(config.baseUrl + 'desk').then((response) => {
       return response.data

@@ -12,15 +12,23 @@
               <Tab-pane label="全部" icon="chatbubble-working">
                 <div class="all-msg">
                   <ul class="msg-list">
-                    <li v-for="item in notice.notice">
-                      <div v-if="item.type == 0">
-                        {{item.message}}
-                        <Button type="primary" size="small" @click="dealFriend(item.from_uid, 1, item.id)">同意</Button>
-                        <Button type="success" size="small" @click="dealFriend(item.from_uid, 0, item.id)">拒绝</Button>
-                      </div>
-                      <div v-else>
-                        {{item.from_username}}添加您为文档{{item.filename}}的协作者
-                        <a @click="readDocNotice(item.id, item.file_id, item.is_read)">查看</a>
+                    <li v-for="item in notice.notice" :class="item.is_read==0?'unread':''">
+                      <img class="from-avatar" :src="item.from_picture!==''?item.from_picture:defaultAvatar" alt="">
+                      <div class="msg-box">
+                        <p class="msg-text" v-if="item.type == 0">
+                          {{item.message}}
+                          <Button type="primary" size="small" @click="dealFriend(item.from_uid, 1, item.id)">同意</Button>
+                          <Button type="success" size="small" @click="dealFriend(item.from_uid, 0, item.id)">拒绝</Button>
+                        </p>
+                        <p class="msg-text" v-else-if="item.type == 1">
+                          {{item.from_username}}添加您为文档【{{item.filename}}】的协作者
+                          <a @click="readDocNotice(item.id, item.file_id, item.is_read)">查看</a>
+                        </p>
+                        <p class="msg-text" v-else>
+                          {{item.from_username}}{{item.is_accept == 0?'拒绝':'接受'}}了您的请求
+                          <a @click="readDealFriend(item.is_read, item.id)">知道了</a>
+                        </p>
+                        <p class="msg-time">{{item.create_time}}</p>
                       </div>
                     </li>
                   </ul>
@@ -28,9 +36,25 @@
               </Tab-pane>
               <Tab-pane :label="'未读('+notice.unread.length+')'" icon="eye">
                 <div class="no-read">
-                  <ul>
+                  <ul class="msg-list">
                     <li v-for="item in notice.unread">
-                      {{item.type}}
+                      <img class="from-avatar" :src="item.from_picture!==''?item.from_picture:defaultAvatar" alt="">
+                      <div class="msg-box">
+                        <p class="msg-text" v-if="item.type == 0">
+                          {{item.message}}
+                          <Button type="primary" size="small" @click="dealFriend(item.from_uid, 1, item.id)">同意</Button>
+                          <Button type="success" size="small" @click="dealFriend(item.from_uid, 0, item.id)">拒绝</Button>
+                        </p>
+                        <p class="msg-text" v-else-if="item.type == 1">
+                          {{item.from_username}}添加您为文档【{{item.filename}}】的协作者
+                          <a @click="readDocNotice(item.id, item.file_id, item.is_read)">查看</a>
+                        </p>
+                        <p class="msg-text" v-else>
+                          {{item.from_username}}{{item.is_accept == 0?'拒绝':'接受'}}了您的请求
+                          <a @click="readDealFriend(item.is_read, item.id)">知道了</a>
+                        </p>
+                        <p class="msg-time">{{item.create_time}}</p>
+                      </div>
                     </li>
                   </ul>
                 </div>
@@ -55,28 +79,79 @@
   </div>
 </template>
 <script>
-  import service from '../services/friend'
+  import service from '../services/header'
   export default {
-    props: ['profile', 'notice'],
+//    props: ['profile', 'notice'],
     data () {
       return {
+        profile: [],
+        notice: {
+          notice: [],
+          unread: []
+        },
         defaultAvatar: require('../assets/avatar.jpg')
       }
     },
+    created () {
+      this.getUserProfile()
+      this.getUserNotices()
+    },
     methods: {
-      dealFriend (fid, type, id) {
-        service.replyFriend(fid, type).then((data) => {
+      getUserProfile () {
+        service.getUser().then((data) => {
           if (data.status_code === 200) {
-            this.readFunc(id)
+            this.profile = data.data.userinfo
           }
         })
       },
+      getUserNotices () {
+        service.getNotice().then((data) => {
+          if (data.status_code === 200) {
+            this.notice.notice = data.data.notices
+            let notice = data.data.notices
+            // eslint-disable-next-line
+            this.notice.unread = _.filter(notice, (o) => {
+              return o.is_read < 1
+            })
+          }
+        })
+      },
+//      处理好友请求
+      dealFriend (fid, type, id) {
+        service.replyFriend(fid, type).then((data) => {
+          if (data.status_code === 200) {
+            this.$Notice.success({
+              title: '操作成功',
+              desc: '成功回复好友申请'
+            })
+            this.readFunc(id)
+          } else if (data.status_code === 240) {
+            this.$Notice.error({
+              title: '操作失败',
+              desc: '您已经处理过该好友请求了'
+            })
+          }
+        })
+      },
+//        查看好友申请结果
+      readDealFriend (isRead, id) {
+        if (isRead === '0') {
+          this.readFunc(id)
+        } else {
+          this.$Notice.success({
+            title: '操作提示',
+            desc: '您已经查看过该条信息了'
+          })
+        }
+      },
+//      查看邀请我协作的文档
       readDocNotice (id, fid, isRead) {
         if (isRead === '0') {
           this.readFunc(id)
         }
         this.$router.push({path: 'editor/' + fid})
       },
+//      读通知的函数
       readFunc (id) {
         service.readNotice(id).then((data) => {
           if (data.status_code === 200) {
@@ -125,10 +200,23 @@
         }
         .msg-list {
           & > li {
-            height: 80px;
-            line-height: 80px;
+            padding: 10px;
             &:hover {
               background-color: #f0f0f0;
+            }
+          }
+          .from-avatar {
+            display: inline-block;
+            vertical-align: top;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+          }
+          .msg-box {
+            display: inline-block;
+            width: 270px;
+            .msg-time {
+              text-align: right;
             }
           }
         }
@@ -144,5 +232,9 @@
         }
       }
     }
+  }
+
+  .ivu-notice {
+    z-index: 1061 !important;
   }
 </style>

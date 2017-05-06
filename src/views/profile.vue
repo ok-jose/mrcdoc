@@ -82,7 +82,10 @@
     data () {
       return {
         profile: [],
-        notice: [],
+        notice: {
+          notice: [],
+          unread: []
+        },
         addFriend: false,
         searchKey: '',
         friendId: '',
@@ -94,20 +97,12 @@
     },
     created () {
       this.getFriends()
-      this.getUserProfile()
     },
     methods: {
       getUserProfile () {
         service.getUser().then((data) => {
           if (data.status_code === 200) {
             this.profile = data.data.userinfo
-          }
-        })
-      },
-      getUserNotices () {
-        service.getNotice().then((data) => {
-          if (data.status_code === 200) {
-            this.notice = data.data.notices
           }
         })
       },
