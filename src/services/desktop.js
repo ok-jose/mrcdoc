@@ -3,10 +3,13 @@
  */
 import axios from 'axios'
 import config from './request'
-// eslint-disable-next-line
-var TOKEN = Cookies.get('token')
-axios.defaults.headers.common['token'] = TOKEN
+var TOKEN = ''
 export default {
+  param () {
+    // eslint-disable-next-line
+    TOKEN = Cookies.get('token')
+    axios.defaults.headers.common['token'] = TOKEN
+  },
   getUser () {
     return axios.get(config.baseUrl + 'user').then((response) => {
       return response.data

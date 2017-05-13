@@ -25,9 +25,9 @@
       v-model="modalData.moveModal"
       title="移动文件">
       <ul>
-        <li v-for="folder in tableData">
+        <li v-for="folder in filterTableDate">
           <Icon class="create-type" type="ios-folder" size="16"></Icon>
-          {{folder | getFolders(folder)}}
+          {{folder.filename}}
         </li>
       </ul>
     </Modal>
@@ -166,6 +166,7 @@
       }
     },
     created () {
+      service.param()
       this.getFileList()
       this.getFriendLists()
       window.breadPath = ['23', '34']
@@ -287,7 +288,14 @@
         return 'hover-show'
       }
     },
-    computed: {},
+    computed: {
+      filterTableDate: function () {
+        var filterTableData = this.tableData
+        return filterTableData.filter(function (item) {
+          return item.type < 1
+        })
+      }
+    },
     filters: {
       getFolders (item) {
         if (item.type < 1) {
@@ -363,9 +371,9 @@
     }
     .writerList {
       text-align: left;
-      .list-ul{
-        & > li{
-          height:35px;
+      .list-ul {
+        & > li {
+          height: 35px;
           line-height: 35px;
         }
       }
@@ -376,7 +384,7 @@
         display: block;
       }
     }
-    .li-avatar{
+    .li-avatar {
       width: 24px;
       height: 24px;
       border-radius: 50%;

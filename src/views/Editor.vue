@@ -47,6 +47,7 @@
   import VueQuillEditor from 'vue-quill-editor'
   Vue.use(VueQuillEditor)
   var socketServer = 'ws://115.159.113.28:3890'
+  // var socketServer = 'ws://192.168.233.100:3890'
   var ws
   export default {
     components: {
@@ -69,11 +70,11 @@
     created () {
       ws = new WebSocket(socketServer)
       console.log(ws)
-      service.getThisFile(this.pid).then((response) => {
-        this.content = response.data.file.content
-        this.filename = response.data.file.filename
-        this.updateTime = response.data.file.update_time
-      })
+//      service.getThisFile(this.pid).then((response) => {
+//        this.content = response.data.file.content
+//        this.filename = response.data.file.filename
+//        this.updateTime = response.data.file.update_time
+//      })
     },
     methods: {
       onEditorBlur (editor) {
@@ -83,16 +84,12 @@
         console.log('editor focus!', editor)
       },
       onEditorReady (editor) {
-//        debugger
-//        console.log(editor.editor)
-//        var st = '{"ops":[{"insert":"First content \nlast"},{"attributes":{"header":1},"insert":"\n"}]}'
-//        editor.editor.delta = st
-//        editor.editor.applyDelta()
-//        service.getThisFile(this.pid).then((response) => {
-//          this.content = response.data.file.content
-//          this.filename = response.data.file.filename
-//          this.updateTime = response.data.file.update_time
-//        })
+        service.getThisFile(this.pid).then((response) => {
+          this.content = response.data.file.content
+          this.filename = response.data.file.filename
+          this.updateTime = response.data.file.update_time
+          editor.setContents(JSON.parse(this.content))
+        })
         ws.onopen = (evt) => {
           var message = {}
           message.type = 'init'
@@ -118,7 +115,7 @@
         message.type = 'message'
         message.delta = editor.delta
         message.doc_id = this.$route.params.file_id
-        message.content = editor.text
+        message.content = editor.contents
         message = JSON.stringify(message)
         console.log('editor change!', message, ws)
         ws.send(message)
@@ -134,7 +131,7 @@
     },
     watch: {
       content: function (newV, oldV) {
-        console.log(newV, oldV)
+        // console.log(newV, oldV)
       }
     }
   }

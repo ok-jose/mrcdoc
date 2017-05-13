@@ -68,7 +68,7 @@
             <ul class="user-center">
               <li>{{profile.username}}</li>
               <li><a href="/profile">账号设置</a></li>
-              <li><a href="/friends">好友列表</a></li>
+              <!--<li><a href="/friends">好友列表</a></li>-->
               <li>使用帮助</li>
               <li @click="signOut">退出登录</li>
             </ul>
